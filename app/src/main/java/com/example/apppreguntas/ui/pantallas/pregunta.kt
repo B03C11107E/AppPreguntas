@@ -6,9 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForward
@@ -33,7 +30,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.apppreguntas.models.Pregunta
@@ -43,7 +39,7 @@ import com.example.apppreguntas.ui.theme.Green
 import com.example.apppreguntas.ui.theme.Red
 
 
-val prueba = listOf(
+val listaDePreguntas = listOf(
     Pregunta("Los himnos cantados en honor a Apolo recibían el nombre de peanes.", true,
         "Como jefe de las Musas inspiradoras (con el epíteto Apolo Musageta), y director de su coro, actuaba como dios patrón de la música y la poesía.",
         R.drawable.apolo),
@@ -62,7 +58,7 @@ val ColorSaver = Saver<Color, Int>(
     restore={ Color(it) }
 )
 @Composable
-fun PantallaPregunta(navController : NavHostController?){
+fun PantallaPregunta(){
     val sharedPref = LocalContext.current.getSharedPreferences(
         stringResource(R.string.stats),
         Context.MODE_PRIVATE
@@ -78,8 +74,8 @@ fun PantallaPregunta(navController : NavHostController?){
     var buttonFalseEnabled by rememberSaveable { mutableStateOf(true) }
     Column(verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.CenterHorizontally){
-        Text(text = prueba[preguntaActual].enunciado, fontSize = 24.sp, modifier = Modifier.weight(1F))
-        Image(painter = painterResource(prueba[preguntaActual].imagen), contentDescription = "",
+        Text(text = listaDePreguntas[preguntaActual].enunciado, fontSize = 24.sp, modifier = Modifier.weight(1F))
+        Image(painter = painterResource(listaDePreguntas[preguntaActual].imagen), contentDescription = "",
             modifier = Modifier
                 .weight(3F)
                 .fillMaxSize(), contentScale = ContentScale.Crop)
@@ -87,40 +83,40 @@ fun PantallaPregunta(navController : NavHostController?){
         Row(Modifier.weight(0.5F)) {
             Boton(texto = "true", ButtonDefaults.buttonColors(colorBotonTrue, disabledContainerColor = colorBotonTrue, disabledContentColor = Color.White)
                 ,buttonTrueEnabled) {
-                if (prueba[preguntaActual].opcionCorrecta) {
-                    correcion = "Bien. " + prueba[preguntaActual].infoExtra
+                if (listaDePreguntas[preguntaActual].opcionCorrecta) {
+                    correcion = "Bien. " + listaDePreguntas[preguntaActual].infoExtra
                     aciertos++
                     total++
                 } else {
-                    correcion = "Mal. " + prueba[preguntaActual].infoExtra
+                    correcion = "Mal. " + listaDePreguntas[preguntaActual].infoExtra
                     fallos++
                     total++
                 }
                 buttonFalseEnabled = false
                 buttonTrueEnabled = false
                 colorBotonTrue =
-                    if (prueba[preguntaActual].opcionCorrecta) Green else Red
+                    if (listaDePreguntas[preguntaActual].opcionCorrecta) Green else Red
                 colorBotonFalse =
-                    if (!prueba[preguntaActual].opcionCorrecta) Green else Red
+                    if (!listaDePreguntas[preguntaActual].opcionCorrecta) Green else Red
 
             }
             Boton(texto = "false", ButtonDefaults.buttonColors(colorBotonFalse, disabledContainerColor = colorBotonFalse, disabledContentColor = Color.White)
                 ,buttonFalseEnabled) {
-                if (!prueba[preguntaActual].opcionCorrecta) {
-                    correcion = "Bien. " + prueba[preguntaActual].infoExtra
+                if (!listaDePreguntas[preguntaActual].opcionCorrecta) {
+                    correcion = "Bien. " + listaDePreguntas[preguntaActual].infoExtra
                     aciertos++
                     total++
                 } else {
-                    correcion = "Mal. " + prueba[preguntaActual].infoExtra
+                    correcion = "Mal. " + listaDePreguntas[preguntaActual].infoExtra
                     fallos++
                     total++
                 }
                 buttonFalseEnabled = false
                 buttonTrueEnabled = false
                 colorBotonFalse =
-                    if (!prueba[preguntaActual].opcionCorrecta) Green else Red
+                    if (!listaDePreguntas[preguntaActual].opcionCorrecta) Green else Red
                 colorBotonTrue =
-                    if (prueba[preguntaActual].opcionCorrecta) Green else Red
+                    if (listaDePreguntas[preguntaActual].opcionCorrecta) Green else Red
             }
         }
         Row(Modifier.weight(0.5F)) {
@@ -130,7 +126,7 @@ fun PantallaPregunta(navController : NavHostController?){
                 Icons.Filled.ArrowBack
             ) {
                 if (preguntaActual == 0) {
-                    preguntaActual = prueba.size - 1
+                    preguntaActual = listaDePreguntas.size - 1
                 } else {
                     preguntaActual--
                 }
@@ -145,7 +141,7 @@ fun PantallaPregunta(navController : NavHostController?){
                 ButtonDefaults.buttonColors(ButtonColor),
                 Icons.Filled.ArrowForward
             ) {
-                if (preguntaActual == prueba.size - 1) {
+                if (preguntaActual == listaDePreguntas.size - 1) {
                     preguntaActual = 0
                 } else {
                     preguntaActual++
@@ -164,7 +160,7 @@ fun PantallaPregunta(navController : NavHostController?){
                 Icons.Filled.Star) {
                 var rnds = -1
                 while(rnds == -1 || rnds == preguntaActual){
-                    rnds = (prueba.indices).random()
+                    rnds = (listaDePreguntas.indices).random()
                 }
                 preguntaActual = rnds
                 correcion = ""

@@ -22,7 +22,7 @@ fun GrafoNavegacion(){
                 PantallaStats()
         }
         composable(rutas.pregunta.ruta){
-            PantallaPregunta(navController = navController)
+            PantallaPregunta()
         }
     }
 }
