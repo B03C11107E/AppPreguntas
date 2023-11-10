@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -31,7 +32,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.example.apppreguntas.models.Pregunta
 import com.example.apppreguntas.R
 import com.example.apppreguntas.ui.theme.ButtonColor
@@ -78,7 +78,9 @@ fun PantallaPregunta(){
         Image(painter = painterResource(listaDePreguntas[preguntaActual].imagen), contentDescription = "",
             modifier = Modifier
                 .weight(3F)
-                .fillMaxSize(), contentScale = ContentScale.Crop)
+                .aspectRatio(painterResource(listaDePreguntas[preguntaActual].imagen).intrinsicSize.width /
+                        painterResource(listaDePreguntas[preguntaActual].imagen).intrinsicSize.height)
+                .fillMaxSize(), contentScale = ContentScale.Fit)
         Text(text = correcion, modifier = Modifier.weight(1.5F), fontSize = 16.sp)
         Row(Modifier.weight(0.5F)) {
             Boton(texto = "true", ButtonDefaults.buttonColors(colorBotonTrue, disabledContainerColor = colorBotonTrue, disabledContentColor = Color.White)
